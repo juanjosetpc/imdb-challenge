@@ -1,0 +1,38 @@
+# === General ===
+.env
+*.log
+.DS_Store
+
+# === Python ===
+__pycache__/
+venv/
+env/
+system_module_1/__pycache__/
+cli/__pycache__/
+system_module_1/data/
+
+# === Java / Maven ===
+HELP.md
+target/
+build/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# === IDEs ===
+.idea/
+.vscode/
+*.iws
+*.iml
+*.ipr
+
+# === Spring Tool Suite (STS) ===
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache

@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_testing_Password
+      MYSQL_DATABASE: imdb_db
+      MYSQL_USER: imdbDockerDeploy
+      MYSQL_PASSWORD: imdbDockerDeploy
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  system_module_1:
+    build:
+      context: ./system_module_1
+      dockerfile: Dockerfile
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./system_module_1:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: imdb_db
+      MYSQL_USER: imdbDockerDeploy
+      MYSQL_PASSWORD: imdbDockerDeploy
+    command: ["python", "main.py", "reload"]
+
+  system_module_2:
+    build:
+      context: ./system_module_2
+      dockerfile: Dockerfile
+    container_name: system_module_2
+    restart: on-failure
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: imdb_db
+      MYSQL_USER: imdbDockerDeploy
+      MYSQL_PASSWORD: imdbDockerDeploy
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql-data:

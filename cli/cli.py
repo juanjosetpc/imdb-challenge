@@ -1,0 +1,77 @@
+import requests
+import questionary
+from questionary import Choice
+import os
+
+API_URL = os.getenv("API_URL", "http://localhost:8080/api")
+
+def search_person():
+    name = questionary.text("Which person do you want to search for?").ask()
+    if not name or not name.strip():
+        print("Please enter a valid name.")
+        return
+
+    try:
+        response = requests.get(f"{API_URL}/people/search", params={"name": name})
+        if response.status_code == 200:
+            people = response.json()
+            if people:
+                for p in people:
+                    birth_year = p.get('birthYear', 'unknown year')
+                    professions = p.get('profession', 'unknown profession')
+                    professions_text = professions[-1:] + ' and ' + professions[:-1]
+                    print(f"{p.get('name')} was born in {birth_year} and was {professions_text}.")
+            else:
+                print("No people found with that name.")
+        elif response.status_code == 400:
+            print("Invalid or missing parameter.")
+        else:
+            print(f"Query error: {response.status_code}")
+    except Exception as e:
+        print(f"Connection error: {e}")
+
+def search_film():
+    title = questionary.text("Which movie or documentary do you want to search for?").ask()
+    if not title or not title.strip():
+        print("Please enter a valid title.")
+        return
+
+    try:
+        response = requests.get(f"{API_URL}/films/search", params={"title": title})
+        if response.status_code == 200:
+            films = response.json()
+            if films:
+                for f in films:
+                    original_title = f.get('originalTitle') or f.get('title') or 'Unknown'
+                    title_type = f.get('type', 'unknown type')
+                    print(f"{original_title}, originally titled '{f.get('originalTitle', original_title)}', is a {title_type}.")
+            else:
+                print("No films found with that title.")
+        elif response.status_code == 400:
+            print("Invalid or missing parameter.")
+        else:
+            print(f"Query error: {response.status_code}")
+    except Exception as e:
+        print(f"Connection error: {e}")
+
+def main():
+    while True:
+        choice = questionary.select(
+            "What would you like to do?",
+            choices=[
+                Choice("Search person by name", "person"),
+                Choice("Search movie or documentary by title", "film"),
+                Choice("Exit", "exit"),
+            ],
+        ).ask()
+
+        if choice == "person":
+            search_person()
+        elif choice == "film":
+            search_film()
+        elif choice == "exit":
+            print("Goodbye!")
+            break
+
+if __name__ == "__main__":
+    main()
