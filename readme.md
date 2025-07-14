@@ -1,6 +1,6 @@
 # 🎬 IMDb Technical Challenge
 
-This project implements a complete IMDb-style system, including:
+This project implements a complete IMDb-style system, including: 
 
 - A **REST API** for searching people and films.
 - A **Python ETL pipeline** to download, process, and load IMDb data.
