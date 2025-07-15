@@ -10,6 +10,7 @@ env/
 system_module_1/__pycache__/
 cli/__pycache__/
 system_module_1/data/
+system_module_1/discarded_*.csv
 
 # === Java / Maven ===
 HELP.md
