@@ -42,7 +42,7 @@ def search_person():
         print(f"Connection error: {e}")
 
 def search_film():
-    title = questionary.text("Which movie or documentary do you want to search for?").ask()
+    title = questionary.text("Which movie do you want to search for?").ask()
     if not title or not title.strip():
         print("Please enter a valid title.")
         return
@@ -71,7 +71,7 @@ def main():
             "What would you like to do?",
             choices=[
                 Choice("Search person by name", "person"),
-                Choice("Search movie or documentary by title", "film"),
+                Choice("Search movie by title", "film"),
                 Choice("Exit", "exit"),
             ],
         ).ask()
