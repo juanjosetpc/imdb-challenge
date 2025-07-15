@@ -5,6 +5,17 @@ import os
 
 API_URL = os.getenv("API_URL", "http://localhost:8080/api")
 
+def format_professions(profession_str):
+    professions = [p.strip() for p in profession_str.split(",") if p.strip()]
+    if not professions:
+        return "unknown profession"
+    if len(professions) == 1:
+        return professions[0]
+    elif len(professions) == 2:
+        return f"{professions[0]} and {professions[1]}"
+    else:
+        return ", ".join(professions[:-1]) + f" and {professions[-1]}"
+
 def search_person():
     name = questionary.text("Which person do you want to search for?").ask()
     if not name or not name.strip():
@@ -18,8 +29,8 @@ def search_person():
             if people:
                 for p in people:
                     birth_year = p.get('birthYear', 'unknown year')
-                    professions = p.get('profession', 'unknown profession')
-                    professions_text = professions[-1:] + ' and ' + professions[:-1]
+                    professions = p.get('profession')
+                    professions_text = format_professions(professions)
                     print(f"{p.get('name')} was born in {birth_year} and was {professions_text}.")
             else:
                 print("No people found with that name.")
