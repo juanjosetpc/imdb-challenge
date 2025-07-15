@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.gz
+*.zip
+*.csv
+*.tsv
+*.log
+data/imdb_downloads/
+discarded_people_*.csv
