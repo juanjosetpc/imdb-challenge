@@ -32,8 +32,8 @@ def search_person():
                     professions = p.get('profession')
                     professions_text = format_professions(professions)
                     print(f"{p.get('name')} was born in {birth_year} and was {professions_text}.")
-            else:
-                print("No people found with that name.")
+        elif response.status_code == 204:
+            print("No people found with that name. (204 No Content)")
         elif response.status_code == 400:
             print("Invalid or missing parameter.")
         else:
@@ -56,8 +56,8 @@ def search_film():
                     original_title = f.get('originalTitle') or f.get('title') or 'Unknown'
                     title_type = f.get('type', 'unknown type')
                     print(f"{original_title}, originally titled '{f.get('originalTitle', original_title)}', is a {title_type}.")
-            else:
-                print("No films found with that title.")
+        elif response.status_code == 204:
+            print("No movie found with that name. (204 No Content)")
         elif response.status_code == 400:
             print("Invalid or missing parameter.")
         else:
